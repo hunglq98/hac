@@ -1,3 +1,4 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 'use strict'
 const request = require('request')
 const cheerio = require('cheerio')
@@ -7,8 +8,6 @@ const chordprojs = require('chordprojs')
 const markdown = require('html-to-markdown')
 
 const domain = 'https://hopamchuan.com'
-
-// https://hopamchuan.com/song/6021/tinh-chua/?s=1
 
 module.exports = {
     autocomplete: (query, callback) => {
@@ -27,10 +26,13 @@ module.exports = {
         )
     },
     get: (query, callback) => {
+        console.log('QUERY ', query)
         request(`${domain}/song/${query}/`, (error, response, body) => {
+            console.log(`${domain}/song/${query}/`)
             if (error) {
                 callback(error, null, response, body)
             } else if (response.statusCode !== 200) {
+                console.log(`${domain}/song/${query}/`)
                 callback(new Error('Bad response'))
             } else {
                 let song = []
